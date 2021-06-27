@@ -15,7 +15,7 @@ public class GameManager {
 
     @SuppressWarnings("InfiniteRecursion")
     public void startGame() {
-        Board playingBoard = new Board(20);
+        Board playingBoard = new Board(19);
         Color playingColor = WHITE;
         displayNewGameText();
 

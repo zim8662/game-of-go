@@ -19,7 +19,7 @@ class Board {
             if (boardMatrix[stone.getY()][stone.getX()].getColor() == EMPTY) {
                 boardMatrix[stone.getY()][stone.getX()] = stone;
                 checkGrouping(stone);
-                removeDeadConnections();
+                removeDeadConnections(stone.getColor());
                 return true;
             }
             return false;
@@ -103,13 +103,13 @@ class Board {
         stone.setLiveConnections(liveConnections);
     }
 
-    private void removeDeadConnections() {
+    private void removeDeadConnections(Color playingColor) {
         calculateLiveConnections();
         Set<Group> groupsForRemoval = new HashSet<>();
 
         for (Stone[] row : boardMatrix) {
             for (Stone stone : row) {
-                if (stone.getGroup() != null && stone.getGroup().getLiveConnections() <= 0) {
+                if (hasNoLiveConnections(stone) && stone.getColor() != playingColor) {
                     groupsForRemoval.add(stone.getGroup());
                 }
             }
@@ -159,5 +159,9 @@ class Board {
 
     private boolean isStoneInSameColorGroup(Stone stone, Stone neighbor) {
         return neighbor != null && neighbor.getGroup() != null && neighbor.getColor() == stone.getColor();
+    }
+
+    private boolean hasNoLiveConnections(Stone stone) {
+        return stone.getGroup() != null && stone.getGroup().getLiveConnections() <= 0;
     }
 }
