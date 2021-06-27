@@ -47,16 +47,12 @@ class Board {
 
         Group group = new Group();
         for (Stone neighbor : neighbours) {
-            if (isStoneInSameColorGroup(stone, neighbor)) {
+            if (isStoneInSameColorGroup(stone, neighbor) && !isStoneInGroup(group, neighbor)) {
                 group.joinGroup(neighbor.getGroup());
             }
         }
 
         group.addStone(stone);
-    }
-
-    private boolean isStoneInSameColorGroup(Stone stone, Stone neighbor) {
-        return neighbor != null && neighbor.getGroup() != null && neighbor.getColor() == stone.getColor();
     }
 
     private void getNeighbours(Stone[] neighbours, Stone stone) {
@@ -120,7 +116,6 @@ class Board {
         }
 
         groupsForRemoval.forEach(group -> group.getStones().forEach(stone -> stone.setColor(EMPTY)));
-        calculateLiveConnections();
     }
 
     private void buildTopHeader(StringBuilder sb) {
@@ -156,5 +151,13 @@ class Board {
             }
             sb.append("-");
         }
+    }
+
+    private boolean isStoneInGroup(Group group, Stone neighbor) {
+        return neighbor.getGroup().equals(group);
+    }
+
+    private boolean isStoneInSameColorGroup(Stone stone, Stone neighbor) {
+        return neighbor != null && neighbor.getGroup() != null && neighbor.getColor() == stone.getColor();
     }
 }
